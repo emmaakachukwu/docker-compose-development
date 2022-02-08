@@ -2,10 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GalleryRequest;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
 {
+    /**
+     * API Client
+     */
+    protected $client;
+
+    /**
+     * Guzzle API Client instance
+     */
+    public function __construct()
+    {
+        $this->client = new Client([
+            'base_uri' => config('api.host'),
+            'timeout'  => 2.0
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,9 +52,14 @@ class GalleryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GalleryRequest $request)
     {
-        //
+        $request = $request->validated();
+        $res = $this->client->post('gallery/store', $request);
+
+        return $res->status ?
+            back()->with('status', $res->message ?? 'Action successful'):
+            back()->withErrors($res->error ?? 'Something went wrong..');
     }
 
     /**
