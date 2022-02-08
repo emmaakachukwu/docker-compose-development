@@ -15,8 +15,9 @@ use App\Http\Controllers\GalleryController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    // return view('welcome');
+    return redirect()->route('gallery.index');
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -14,6 +14,7 @@ class GalleryController extends Controller
     public function index()
     {
         $title = "Gallery";
+        $images = [];
         return view('gallery.index', compact('images', 'title'));
     }
 
@@ -24,7 +25,7 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        //
+        return view('gallery.create');
     }
 
     /**
