@@ -13,6 +13,13 @@
 |
 */
 
-$router->get('/', function () use ($router) {
+$router->get('', function () use ($router) {
     return $router->app->version();
+});
+
+$router->group(['prefix' => 'api/v1'], function (\Laravel\Lumen\Routing\Router $router) {
+    $router->group(['prefix' => 'gallery'], function () use ($router) {
+        $router->get('', 'GalleryController@index');
+        $router->post('store', 'GalleryController@store');
+    });
 });
