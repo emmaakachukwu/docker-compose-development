@@ -4,11 +4,12 @@
     <x-shadow-card class="my-6">
         <div class="grid grid-cols-1 md:grid-col-2 lg:grid-cols-3 gap-4">
             @foreach ($images as $image)
-                <div class="flex flex-col bg-white border border-gray-300">
-                    <img src="{{ $image->src }}" alt="{{ $image->title }}">
-                    <div>
-                        <p class="text-center text-gray-500">{{ $image->title }}</p>
-                        <p class="text-sm">{{ date('d M, Y', strtotime($image->created_at)) }}</p>
+                <div class="flex flex-col gap-4 bg-white border border-gray-300 rounded">
+                    <img src="{{ asset("storage/$image->path") }}" alt="{{ $image->title }}">
+                    <div class="flex flex-col gap-2 jusify-between">
+                        <p class="text-center text-gray-500 text-2xl font-bold">{{ $image->title }}</p>
+                        <p class="text-center text-gray-500 text-xl">{{ $image->uploader }}</p>
+                        <p class="text-center text-gray-500 text-sm">{{ date('d M, Y', strtotime($image->created_at)) }}</p>
                     </div>
                 </div>
             @endforeach

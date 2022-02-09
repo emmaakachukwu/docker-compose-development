@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GalleryRequest;
-use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Http\Services\ApiService;
+use App\Http\Requests\GalleryRequest;
 
 class GalleryController extends Controller
 {
@@ -18,10 +19,7 @@ class GalleryController extends Controller
      */
     public function __construct()
     {
-        $this->client = new Client([
-            'base_uri' => config('api.host'),
-            'timeout'  => 2.0
-        ]);
+        $this->client = new ApiService;
     }
 
     /**
@@ -32,7 +30,9 @@ class GalleryController extends Controller
     public function index()
     {
         $title = "Gallery";
-        $images = [];
+        $res = $this->client->get('gallery');
+
+        $images = $res->data;
         return view('gallery.index', compact('images', 'title'));
     }
 
@@ -55,11 +55,14 @@ class GalleryController extends Controller
     public function store(GalleryRequest $request)
     {
         $request = $request->validated();
-        $res = $this->client->post('gallery/store', $request);
+
+        $request['path'] = $request['image']->store('gallery');
+
+        $res = $this->client->post('gallery/store', Arr::only($request, ['title', 'uploader', 'path']));
 
         return $res->status ?
             back()->with('status', $res->message ?? 'Action successful'):
-            back()->withErrors($res->error ?? 'Something went wrong..');
+            back()->withErrors($res->errors ?? 'Something went wrong..');
     }
 
     /**
