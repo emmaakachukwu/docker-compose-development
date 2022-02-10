@@ -1,6 +1,6 @@
 # GALLERY APP SETUP
 
-- run command: `sudo bash install.sh`
+- run command: `sudo bash install.sh` for UNIX users or `bash install.sh` for windows users
     - builds the images
     - brings up the containers
     - install dependencies
