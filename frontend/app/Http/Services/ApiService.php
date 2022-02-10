@@ -18,7 +18,8 @@ class ApiService
     public function __construct()
     {
         $this->client = new Client([
-            'base_uri' => config('api.host')
+            'base_uri' => config('api.host'),
+            'timeout' => 5
         ]);
     }
 
@@ -32,6 +33,8 @@ class ApiService
             return json_decode($response->getBody());
         } catch (ClientException $e) {
             return json_decode($e->getResponse()->getBody());
+        } catch (\Exception $e) {
+            dd($e);
         }
     }
 
